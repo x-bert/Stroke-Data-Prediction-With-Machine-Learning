@@ -1,0 +1,736 @@
+---
+title: "Stoke Data Reprocessed"
+author: "Tracia Lauren, Albert"
+date: "2025-04-15"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Stroke Data
+Data yang digunakan dalam penelitian ini adalah stroke data yang didapatkan dari kaggle.
+Link data: https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset
+```{r}
+stroke_data = read.table(file.choose(),sep=",", header=T)
+head(stroke_data)
+```
+variabel numerik: id, age, avg_glucose_level, bmi
+variabel kategorik: gender, ever_married, work_type, Residence_type, smoking_status, hypertension, heart_disease, stroke
+
+## 1.Univariant
+### 1.1 Variabel Kategorik
+Pie Chart untuk Variabel Gender
+
+```{r}
+t1 = table(stroke_data$gender)
+t1
+```
+```{r}
+pie(t1, main="Gender")
+```
+Di karenakan ada variable error "Other" maka other akan dihapus untuk membersihkan data.
+```{r}
+stroke_data <- stroke_data[stroke_data$gender != "Other", ]
+t2 = table(stroke_data$gender)
+pie(t2, main="Gender")
+
+```
+Pie Chart untuk Variabel Ever_Married
+```{r}
+t3 = table(stroke_data$ever_married)
+t3
+
+```
+```{r}
+t3 = table(stroke_data$ever_married)
+pie(t3, main="Martial Status")
+```
+
+
+Bar Chart untuk Variabel Work_Type
+
+```{r}
+t4 = table(stroke_data$work_type)
+t4
+```
+```{r}
+t4 = table(stroke_data$work_type)
+barplot(t4, main="Work Type")
+```
+
+
+Bar Chart untuk Variabel Residence_Type
+
+```{r}
+t5 = table(stroke_data$Residence_type)
+t5
+```
+```{r}
+t5 = table(stroke_data$Residence_type)
+barplot(t5, main="Resident Type")
+```
+
+Pie Chart untuk Variabel Smoking_Status
+
+```{r}
+t6 = table(stroke_data$smoking_status)
+t6
+```
+```{r}
+t6 = table(stroke_data$smoking_status)
+pie(t6, main="Smoking Status")
+```
+
+Walaupun berbentuk nomor, data hanya mengunakan 0 dan 1 yang dapat diartikan sebagai 0 = tidak, 1 = iya. Jadi kami menggunakan pie chart.
+```{r}
+t7 = table(stroke_data$hypertension)
+t7
+```
+
+```{r}
+t7 = table(stroke_data$hypertension)
+pie(t7,main="Hypertension")
+```
+
+Pie Chart Heart Disease 
+Walaupun berbentuk nomor, data hanya mengunakan 0 dan 1 yang dapat diartikan sebagai 0 = tidak, 1 = iya. Jadi kami menggunakan pie chart.
+
+```{r}
+t8 = table(stroke_data$heart_disease)
+t8
+```
+```{r}
+t8 = table(stroke_data$heart_disease)
+pie(t8,main="Heart Disease")
+```
+
+Pie Chart Stroke
+Walaupun berbentuk nomor, data hanya mengunakan 0 dan 1 yang dapat diartikan sebagai 0 = tidak, 1 = iya. Jadi kami menggunakan pie chart.
+```{r}
+t9 = table(stroke_data$stroke)
+t9
+```
+
+
+```{r}
+t9 = table(stroke_data$stroke)
+pie(t9,main="Stroke")
+```
+
+### 1.2 Variabel Numerik
+Box Plot Age
+Untuk mengecheck apakah ada outlier.
+
+```{r}
+boxplot(stroke_data$age)
+```
+Tidak ada outlier.
+
+Pie Chart Hyptension
+
+
+Box Plot Average Glucose Level
+
+```{r}
+boxplot(stroke_data$avg_glucose_level)
+```
+Terdapat banyak outlier dimulai diantara 150 dan 200, sekitar 170-an. 
+
+Box Plot Bmi 
+
+```{r}
+stroke_data <- stroke_data[stroke_data$bmi != "N/A", ]
+t20 = table(stroke_data$bmi)
+boxplot(t20)
+```
+Terdapat sedikit masalah dikarenakan beberapa data kosong yang memunculkan N/A dalam excel, data yang menunjukan N/A di hilangkan, tidak ada outlier.
+
+
+
+## 2. Bivariate
+### 2.1 Variabel Numerik dan Varibel Numerik
+
+Scatter Plot (age & average glucose level)
+
+```{r}
+plot(stroke_data$age, stroke_data$avg_glucose_level)
+```
+
+Scatter Plot (age & bmi)
+
+```{r}
+plot(stroke_data$age, stroke_data$bmi)
+```
+
+
+Scatter Plot (average glucose level & bmi)
+
+```{r}
+plot(stroke_data$avg_glucose_level, stroke_data$bmi)
+```
+
+### 2.2 Variabel Kategorik dan Variabel Kategorik
+Frequency (gender & martial status)
+
+```{r}
+a1 = table(stroke_data$gender, stroke_data$ever_married)
+a1
+```
+Bar Chart Gender & Martial Status
+
+```{r}
+barplot(a1, legend.text = c("female", "male"), main="Gender & Martial Status",beside=T)
+```
+
+
+Frequency (gender & work type)
+
+```{r}
+a2 = table(stroke_data$gender, stroke_data$work_type)
+a2
+```
+
+Bar Chart Gender & Work Type
+
+```{r}
+barplot(a2, legend.text = c("female", "male"), main="Gender & Work Type",beside=T)
+```
+
+Frequency (gender & residence type)
+
+```{r}
+a3 = table(stroke_data$gender, stroke_data$Residence_type)
+a3
+```
+
+Bar Chart Gender & Residence Type
+
+```{r}
+barplot(a3, legend.text = c("female", "male"), main="Gender & Residence Type",beside=T)
+```
+
+Frequency (gender & smoking status)
+
+```{r}
+a4 = table(stroke_data$gender, stroke_data$smoking_status)
+a4
+```
+
+Bar Chart Gender & Smoking Status
+
+```{r}
+barplot(a4, legend.text = c("female", "male"), main="Gender & Smoking Status",beside=T)
+```
+Frequency (gender & hypertension)
+
+```{r}
+a11 = table(stroke_data$gender, stroke_data$hypertension)
+a11
+```
+
+Bar Chart Gender & Smoking hypertension
+
+```{r}
+barplot(a11, legend.text = c("female", "male"), main="Gender & Hypertension",beside=T)
+```
+Frequency (gender & heart disease)
+
+```{r}
+a12 = table(stroke_data$gender, stroke_data$heart_disease)
+a12
+```
+
+Bar Chart Gender & Heart Disease
+
+```{r}
+barplot(a12, legend.text = c("female", "male"), main="Gender & Heart Disease",beside=T)
+```
+Frequency (gender & stroke)
+
+```{r}
+a13 = table(stroke_data$gender, stroke_data$stroke)
+a13
+```
+
+Bar Chart Gender & Stroke
+
+```{r}
+barplot(a13, legend.text = c("female", "male"), main="Gender & Stroke",beside=T)
+```
+
+Frequency (martial status & work type)
+
+```{r}
+a5 = table(stroke_data$ever_married, stroke_data$work_type)
+a5
+```
+
+Bar Chart Martial Status & Work Type
+
+```{r}
+barplot(a5, legend.text = c("No", "Yes"), main="Martial Status & Work Type",beside=T)
+```
+
+Frequency (martial status & residence type)
+
+```{r}
+a6 = table(stroke_data$ever_married, stroke_data$Residence_type)
+a6
+```
+
+Bar Chart Martial Status & Residence Type
+
+```{r}
+barplot(a6, legend.text = c("No", "Yes"), main="Martial Status & Residence Type",beside=T)
+```
+
+Frequency (martial status & smoking status)
+
+```{r}
+a7 = table(stroke_data$ever_married, stroke_data$smoking_status)
+a7
+```
+
+Bar Chart Martial Status & Smoking Status
+
+```{r}
+barplot(a7, legend.text = c("No", "Yes"), main="Martial Status & Smoking Status",beside=T)
+```
+
+Frequency (martial status & hypertension)
+
+```{r}
+a14 = table(stroke_data$ever_married, stroke_data$hypertension)
+a14
+```
+
+Bar Chart Martial Status & Hypertension
+
+```{r}
+barplot(a14, legend.text = c("No", "Yes"), main="Martial Status & Hypertension",beside=T)
+```
+
+Frequency (martial status & heart disease)
+
+```{r}
+a15 = table(stroke_data$ever_married, stroke_data$heart_disease)
+a15
+```
+
+Bar Chart Martial Status & Heart Disease
+
+```{r}
+barplot(a15, legend.text = c("No", "Yes"), main="Martial Status & Heart Disease",beside=T)
+```
+
+Frequency (martial status & stroke)
+
+```{r}
+a16 = table(stroke_data$ever_married, stroke_data$stroke)
+a16
+```
+
+Bar Chart Martial Status & Stroke
+
+```{r}
+barplot(a16, legend.text = c("No", "Yes"), main="Martial Status & Stroke",beside=T)
+```
+
+Frequency (work type & residence type)
+
+```{r}
+a8 = table(stroke_data$work_type, stroke_data$Residence_type)
+a8
+```
+
+Bar Chart Work Type & Residence Type
+
+```{r}
+barplot(a8, legend.text = c("Children", "Govt_job", "Never_worked", "Private", "Self_employed"), main="Work Type & Residence Type",beside=T)
+```
+
+Frequency (work type & smoking status)
+
+```{r}
+a9 = table(stroke_data$work_type, stroke_data$smoking_status)
+a9
+```
+
+Bar Chart Work Type & Smoking Status
+```{r}
+barplot(a9, legend.text = c("Children", "Govt_job", "Never_worked", "Private", "Self_employed"), main="Work Type & Smoking Status",beside=T)
+```
+
+Frequency (work type & hypertension)
+
+```{r}
+a17 = table(stroke_data$work_type, stroke_data$hypertension)
+a17
+```
+
+Bar Chart Work Type & Hypertension
+```{r}
+barplot(a17, legend.text = c("Children", "Govt_job", "Never_worked", "Private", "Self_employed"), main="Work Type & Hypertension",beside=T)
+```
+
+
+Frequency (work type & heart disease)
+
+```{r}
+a18 = table(stroke_data$work_type, stroke_data$heart_disease)
+a18
+```
+
+Bar Chart Work Type & Smoking Status
+```{r}
+barplot(a18, legend.text = c("Children", "Govt_job", "Never_worked", "Private", "Self_employed"), main="Work Type & Heart Disease",beside=T)
+```
+
+
+Frequency (work type & stoke)
+
+```{r}
+a19 = table(stroke_data$work_type, stroke_data$stroke)
+a19
+```
+
+Bar Chart Work Type & Stroke
+```{r}
+barplot(a19, legend.text = c("Children", "Govt_job", "Never_worked", "Private", "Self_employed"), main="Work Type & Stroke",beside=T)
+```
+
+Frequency (residence type & smoking status)
+
+```{r}
+a10 = table(stroke_data$Residence_type, stroke_data$smoking_status)
+a10
+```
+
+Bar Chart Residence Type & Smoking Status
+
+
+```{r}
+barplot(a10, legend.text = c("Rural", "Urban"), main="Residence Type & Smoking Status",beside=T)
+```
+Frequency (residence type & hypertension)
+
+```{r}
+a20 = table(stroke_data$Residence_type, stroke_data$hypertension)
+a20
+```
+
+Bar Chart Residence Type & Hypertension
+
+
+```{r}
+barplot(a20, legend.text = c("Rural", "Urban"), main="Residence Type & hypertension",beside=T)
+```
+
+Frequency (residence type & heart disease)
+
+```{r}
+a21 = table(stroke_data$Residence_type, stroke_data$heart_disease)
+a21
+```
+
+Bar Chart Residence Type & Heart Disease
+
+
+```{r}
+barplot(a21, legend.text = c("Rural", "Urban"), main="Residence Type & Heart Disease",beside=T)
+```
+
+Frequency (residence type & stroke)
+
+```{r}
+a22 = table(stroke_data$Residence_type, stroke_data$stroke)
+a22
+```
+
+Bar Chart Residence Type & Stroke
+
+
+```{r}
+barplot(a22, legend.text = c("Rural", "Urban"), main="Residence Type & Stroke",beside=T)
+```
+Frequency (smoking status & hypertension)
+
+```{r}
+a23 = table(stroke_data$smoking_status, stroke_data$hypertension)
+a23
+```
+
+Bar Chart Smoking Status & Hypertension
+
+
+```{r}
+barplot(a23, legend.text = c("Formerly Smoked","Never Smoked","Smokes", "Unknown"), main="Smoking Status & Hypertension",beside=T)
+```
+Frequency (smoking status & heart disease)
+
+```{r}
+a24 = table(stroke_data$smoking_status, stroke_data$heart_disease)
+a24
+```
+
+Bar Chart Smoking Status & Heart Disease
+
+
+```{r}
+barplot(a24, legend.text = c("Formerly Smoked","Never Smoked","Smokes", "Unknown"), main="Smoking Status & Heart Disease",beside=T)
+```
+Frequency (smoking status & stroke)
+
+```{r}
+a25 = table(stroke_data$smoking_status, stroke_data$stroke)
+a25
+```
+
+Bar Chart Smoking Status & Hypertension
+
+
+```{r}
+barplot(a25, legend.text = c("Formerly Smoked","Never Smoked","Smokes", "Unknown"), main="Smoking Status & Stroke",beside=T)
+```
+Frequency (hypertension & heart disease)
+
+```{r}
+a26 = table(stroke_data$hypertension, stroke_data$hypertension)
+a26
+```
+
+Bar Chart Hypertension & Heart Disease
+
+
+```{r}
+barplot(a26, legend.text = c("No", "Yes"), main="Hypertension & Heart Disease",beside=T)
+```
+Frequency (hypertension & stroke)
+
+```{r}
+a27 = table(stroke_data$hypertension, stroke_data$stroke)
+a27
+```
+
+Bar Chart Hypertension & Stroke
+
+
+```{r}
+barplot(a27, legend.text = c("No", "Yes"), main="Hypertension & Stroke",beside=T)
+```
+
+Frequency (heart disease & stroke)
+
+```{r}
+a28 = table(stroke_data$heart_disease, stroke_data$stroke)
+a28
+```
+
+Bar Chart Heart Disease & Stroke
+
+
+```{r}
+barplot(a28, legend.text = c("No", "Yes"), main="Heart Disease & Stroke",beside=T)
+```
+
+### 2.3 Variabel Numerik dan Variabel Kategorik
+Box Plot (age, gender)
+
+```{r}
+boxplot(age~gender, data=stroke_data)
+```
+
+Box Plot (age, martial status)
+```{r}
+boxplot(age~ever_married, data=stroke_data)
+```
+
+Box Plot (age, work_type)
+```{r}
+boxplot(age~work_type, data=stroke_data)
+```
+
+Box Plot (age, residence type)
+```{r}
+boxplot(age~Residence_type, data=stroke_data)
+```
+
+Box Plot (age, smoking status)
+```{r}
+boxplot(age~smoking_status, data=stroke_data)
+```
+Box Plot (age, hypertension)
+```{r}
+boxplot(age~hypertension, data=stroke_data)
+```
+
+Box Plot (age, heart_disease)
+```{r}
+boxplot(age~heart_disease, data=stroke_data)
+```
+
+Box Plot (age, stroke)
+```{r}
+boxplot(age~stroke, data=stroke_data)
+```
+
+
+Box Plot (average glucose level, gender)
+```{r}
+boxplot(avg_glucose_level~gender, data=stroke_data)
+```
+Box Plot (average glucose level, martial status)
+```{r}
+boxplot(avg_glucose_level~ever_married, data=stroke_data)
+```
+
+Box Plot (average glucose level, work_type)
+```{r}
+boxplot(avg_glucose_level~work_type, data=stroke_data)
+```
+
+Box Plot (average glucose level, residence type)
+```{r}
+boxplot(avg_glucose_level~Residence_type, data=stroke_data)
+```
+
+Box Plot (average glucose level, smoking status)
+```{r}
+boxplot(avg_glucose_level~smoking_status, data=stroke_data)
+```
+Box Plot (average glucose level, hypertension)
+```{r}
+boxplot(avg_glucose_level~hypertension, data=stroke_data)
+```
+
+Box Plot (average glucose level, heart disease)
+```{r}
+boxplot(avg_glucose_level~heart_disease, data=stroke_data)
+```
+
+Box Plot (average glucose level, stroke)
+```{r}
+boxplot(avg_glucose_level~stroke, data=stroke_data)
+```
+
+## 3. Multivariate
+### 3.1 Variabel Kategorik
+```{r}
+mosaicplot(~gender+smoking_status+hypertension+heart_disease+stroke, data=stroke_data)
+```
+### 3.2 Variabel Numerik
+
+```{r}
+head(stroke_data)
+```
+```{r}
+datanum = stroke_data[,c(3,9)]
+head(datanum)
+```
+
+```{r}
+korelasi = cor(datanum)
+korelasi
+```
+```{r}
+library(corrplot)
+```
+
+```{r}
+corrplot(korelasi, method="number", type="upper", insig="p-value")
+```
+uji dependensi (0,1) -> kategorik
+```{r}
+# Membuat data frame
+data <- matrix(c(30, 10, 20, 40), nrow=2, byrow=FALSE)
+rownames(data) <- c("Laki-laki", "Perempuan")
+colnames(data) <- c("Diabetes: Ya", "Diabetes: Tidak")
+
+# Tampilkan tabel
+print(data)
+
+# Uji Chi-Square
+chi_result <- chisq.test(data)
+
+# Output
+cat("Chi-Square Test\n")
+cat(sprintf("Chi-Square Statistic: %.2f\n", chi_result$statistic))
+cat(sprintf("P-Value: %.4f\n", chi_result$p.value))
+cat(sprintf("Degrees of Freedom: %d\n", chi_result$parameter))
+cat("\nTabel Expected:\n")
+print(chi_result$expected)
+
+```
+```{r}
+set.seed(42)
+
+df <- data.frame(
+  age = sample(20:70, 100, replace = TRUE),
+  blood_pressure = rnorm(100, mean = 120, sd = 10),
+  bmi = rnorm(100, mean = 25, sd = 4)
+)
+
+# Tampilkan 10 baris pertama
+head(df, 10)
+
+```
+
+```{r}
+install.packages("ggplot2")
+
+# Korelasi Pearson
+pearson_result <- cor.test(df$age, df$blood_pressure, method = "pearson")
+
+cat(sprintf("Korelasi Pearson (age vs blood_pressure): %.3f, p-value: %.4f\n",
+            pearson_result$estimate, pearson_result$p.value))
+
+# Scatter plot dengan regresi
+library(ggplot2)
+
+ggplot(df, aes(x = age, y = blood_pressure)) +
+  geom_point(color = 'skyblue', shape = 21, size = 3, stroke = 0.5) +
+  geom_smooth(method = 'lm', color = 'orange', se = FALSE) +
+  labs(title = "Scatter Plot: Age vs Blood Pressure",
+       x = "Age", y = "Blood Pressure") +
+  theme_minimal()
+
+```
+
+```{r}
+# Korelasi Spearman
+spearman_result <- cor.test(df$age, df$bmi, method = "spearman")
+
+cat(sprintf("Korelasi Spearman (age vs bmi): %.3f, p-value: %.4f\n",
+            spearman_result$estimate, spearman_result$p.value))
+
+# Plot age vs bmi dengan regresi
+ggplot(df, aes(x = age, y = bmi)) +
+  geom_point(color = 'lightgreen', shape = 21, size = 3, stroke = 0.5) +
+  geom_smooth(method = 'lm', color = 'darkgreen', se = FALSE) +
+  labs(title = "Scatter Plot: Age vs BMI", x = "Age", y = "BMI") +
+  theme_minimal()
+
+```
+
+```{r}
+# Heatmap korelasi
+library(corrplot)
+
+corr_matrix <- cor(df)
+
+corrplot(corr_matrix, method = "color", addCoef.col = "black",
+         tl.cex = 0.8, number.cex = 0.7, title = "Heatmap Korelasi Antar Variabel",
+         mar = c(0,0,1,0))
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
